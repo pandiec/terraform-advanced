@@ -1,0 +1,15 @@
+awsRegion: ap-northeast-1 # change this to your region!
+
+rbac:
+  create: true
+  serviceAccount:
+    annotations: # ref: https://github.com/kubernetes/autoscaler/tree/master/charts/cluster-autoscaler#aws---iam-roles-for-service-accounts-irsa
+      eks.amazonaws.com/role-arn: "arn:aws:iam::266981300450:role/EKSClusterAutoscaler" # copy your IAM role ARN!
+
+autoDiscovery:
+  clusterName: eks-apne1-prod-terraform-eks-demo-infra # change this to your cluster name!
+  enabled: true
+
+# usage
+# helm repo add autoscaler https://kubernetes.github.io/autoscaler
+# helm install cluster-autoscaler     autoscaler/cluster-autoscaler     --namespace kube-system     --values overrides.yaml

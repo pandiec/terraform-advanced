@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: test-irsa
+  name: test-irsa
+  namespace: default # namespace must match with the one specified in AWS IAM role
+spec:
+  containers:
+  - command:
+    - sleep
+    - "500"
+    image: amazon/aws-cli
+    name: test-irsa
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+  serviceAccountName: test-irsa # service account name must match with the one specified in AWS IAM role
+  # affinity:  # since we added taint and label to worker node, pod needs affinity and tolerations
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key: "env" # match with node's label
+  #           operator: In
+  #           values:
+  #           - "staging"
+  #         - key: "unmanaged-node" # match with node's label
+  #           operator: In
+  #           values:
+  #           - "true"
+  # tolerations: # match with node's taint
+  # - key: "staging-only"
+  #   operator: "Equal"
+  #   value: "true"
+  #   effect: "PreferNoSchedule"
